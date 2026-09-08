@@ -16,12 +16,12 @@ export default function Header() {
             </a>
           </li>
           <li>
-            <a href="/about" className="font-size-large text-black hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
+            <a href="/blivFrivllig" className="font-size-large text-black hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
               Bliv frivlillig
             </a>
           </li>
           <li>
-            <a href="/contact" className="font-size-large text-black hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
+            <a href="/adopterEtDyr" className="font-size-large text-black hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
               Adopter et dyr
             </a>
           </li>
