@@ -4,7 +4,7 @@ export default function Home() {
     <div className="">
       <main className="">
         <Header />
-        <p> hej med dig</p>
+        
       </main>
     </div>
   );
