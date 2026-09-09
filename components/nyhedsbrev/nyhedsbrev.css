@@ -4,3 +4,20 @@
 .nyhedsbrev-font-color{
     color: #3D5F8F;
 }
+
+.nyheds-button{
+    border: black 1px solid;
+    height: 2.5rem;
+}
+
+@media (max-width: 768px) {
+    .nyheds-bg {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-col {
+        flex-direction: column;
+    }
+}
