@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import nyhedsbrev from "./nyhedsbrev.css";
+import "./nyhedsbrev.css";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -9,6 +9,7 @@ export default function Nyhedsbrev() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [errors, setErrors] = useState({});
+    const [submitMessage, setSubmitMessage] = useState("");
 
     function validate() {
         const newErrors = {};
@@ -23,13 +24,35 @@ export default function Nyhedsbrev() {
         return newErrors;
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         const newErrors = validate();
         setErrors(newErrors);
-        if (Object.keys(newErrors).length === 0) {
+
+        if (Object.keys(newErrors).length > 0) return;
+
+        try {
+            const response = await fetch("http://localhost:4000/api/v1/subscribers", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: name.trim(),
+                    email: email.trim(),
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Nyhedsbrev tilmelding mislykkedes");
+            }
+
             setName("");
             setEmail("");
+            setSubmitMessage("Du er nu tilmeldt nyhedsbrevet.");
+        } catch (error) {
+            console.error("Fejl ved tilmelding:", error);
+            setSubmitMessage("Der opstod en fejl. Prøv igen senere.");
         }
     }
 
@@ -67,6 +90,7 @@ export default function Nyhedsbrev() {
                     >
                         Tilmeld
                     </button>
+                    {submitMessage && <p className="text-sm">{submitMessage}</p>}
                 </form>
             </div>
         </div>
