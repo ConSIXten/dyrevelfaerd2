@@ -17,3 +17,13 @@ footer {
 .partners-list {
     color: #0088CC;
 }
+
+footer p {
+    padding-top: calc(var(--spacing) * 40) /* 10rem = 160px */;
+}
+
+@media (max-width: 768px) {
+    footer p {
+        padding-top: calc(var(--spacing) * 3) /* 5rem = 80px */;
+    }
+}
