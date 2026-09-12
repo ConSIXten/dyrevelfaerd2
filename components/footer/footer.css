@@ -4,6 +4,8 @@ footer {
     justify-content: center;
     align-items: center;
     padding-left: 15rem;
+    bottom: 0;
+    width: 100%;
 }
 
 @media (max-width: 768px) {

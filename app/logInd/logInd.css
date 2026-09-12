@@ -1,0 +1,65 @@
+.logind-container {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 1rem;
+    margin-bottom: 12.3rem;
+    margin-top: 4rem;
+}
+
+.logind-card {
+    width: 100%;
+    max-width: 28rem;
+    border: 1px solid #000000;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 2rem 2rem;
+    background-color: #fff;
+}
+
+.logind-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.logind-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+}
+
+.logind-field label {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.logind-field input {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.logind-field input:focus {
+    outline: none;
+    border-color: #3D5F8F;
+}
+
+.logind-btn {
+    background-color: #3D5F8F;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.logind-btn:hover {
+    background-color: #2f4a70;
+}
+
+.login-error {
+    color: #b3261e;
+    margin-top: 0.75rem;
+}
