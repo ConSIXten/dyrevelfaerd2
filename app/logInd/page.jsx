@@ -12,15 +12,15 @@ export default function LogIndPage() {
     const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(null);
+    const [fieldErrors, setFieldErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(null);
+        setFieldErrors({});
 
         if (!EMAIL_REGEX.test(username)) {
-            setError("Indtast venligst en gyldig email-adresse");
+            setFieldErrors({ username: "Indtast venligst en gyldig email-adresse" });
             return;
         }
 
@@ -39,7 +39,7 @@ export default function LogIndPage() {
             localStorage.setItem("user", JSON.stringify({ id: user.id, username }));
             router.push("/admin");
         } catch (err) {
-            setError(err.message);
+            setFieldErrors({ password: err.message });
         } finally {
             setSubmitting(false);
         }
@@ -51,7 +51,7 @@ export default function LogIndPage() {
             <div className="logind-container">
                 <div className="logind-card">
                     <h1 className="logind-title">Log ind på din konto</h1>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} noValidate>
                         <div className="logind-field">
                             <label htmlFor="username">Email</label>
                             <input
@@ -63,6 +63,9 @@ export default function LogIndPage() {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
+                            {fieldErrors.username && (
+                                <p className="field-error">{fieldErrors.username}</p>
+                            )}
                         </div>
                         <div className="logind-field">
                             <label htmlFor="password">Password</label>
@@ -79,11 +82,10 @@ export default function LogIndPage() {
                         <button type="submit" className="logind-btn" disabled={submitting}>
                             {submitting ? "Logger ind..." : "Log ind"}
                         </button>
-                        {error && <p className="login-error">{error}</p>}
                     </form>
                 </div>
             </div>
-                <Footer />
+            <Footer />
         </>
     );
 }

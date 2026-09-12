@@ -63,3 +63,10 @@
     color: #b3261e;
     margin-top: 0.75rem;
 }
+
+.field-error {
+    color: #b3261e;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0;
+}
