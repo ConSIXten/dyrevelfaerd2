@@ -36,7 +36,7 @@ export default function LogIndPage() {
             if (!res.ok) throw new Error("Log ind mislykkedes");
 
             const user = await res.json();
-            localStorage.setItem("user", JSON.stringify({ id: user.id, username }));
+            sessionStorage.setItem("user", JSON.stringify({ id: user.id, username }));
             router.push("/admin");
         } catch (err) {
             setFieldErrors({ password: err.message });
