@@ -1,0 +1,26 @@
+.grid-template {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+@media (max-width: 768px) {
+    .grid-template {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    width: fit-content;
+    height: auto;
+    background-color: #fff;
+    overflow: hidden;
+    color: black;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fp-font-color {
+    color: #3D5F8F;
+}

@@ -1,0 +1,31 @@
+footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    padding-left: 15rem;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    footer {
+        grid-template-columns: 1fr;
+        padding-left: 2rem;
+        gap: 2rem;
+    }
+}
+
+.partners-list {
+    color: #0088CC;
+}
+
+footer p {
+    padding-top: calc(var(--spacing) * 40) /* 10rem = 160px */;
+}
+
+@media (max-width: 768px) {
+    footer p {
+        padding-top: calc(var(--spacing) * 3) /* 5rem = 80px */;
+    }
+}

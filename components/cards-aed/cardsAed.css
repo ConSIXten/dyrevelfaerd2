@@ -1,0 +1,79 @@
+.dho-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    margin-inline: 10rem;
+}
+
+@media (max-width: 768px) {
+    .dho-grid {
+        grid-template-columns: 1fr;
+        margin-inline: 2rem;
+    }
+}
+
+.cardDho {
+    display: flex;
+    border: 1px solid #000000;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.dho-image {
+    width: 10rem;
+    height: auto;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.dho-body {
+    padding: 1rem;
+}
+
+.dho-title {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.dho-text {
+    color: #333;
+    margin-bottom: 0.75rem;
+}
+
+.dho-days {
+    color: #777;
+    font-size: 0.85em;
+}
+
+.dho-more-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+}
+
+.dho-more-btn {
+    background-color: #3D5F8F;
+    color: #fff;
+    border: none;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.dho-more-btn:hover {
+    background-color: #2f4a70;
+}
+
+.dho-less-btn {
+    background-color: transparent;
+    color: #3D5F8F;
+    border: 1px solid #3D5F8F;
+}
+
+.dho-less-btn:hover {
+    background-color: #eef2f7;
+}
