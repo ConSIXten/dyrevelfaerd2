@@ -15,7 +15,7 @@ export default async function CardsFp() {
         <section className="grid-template mx-20 my-20 gap-5">
             {abouts.map((about) => (
                 <div className="card" key={about.id}>
-                    <h2 className="fp-font-color text-2xl font-bold">{about.title}</h2>
+                    <h2 className="fp-font-color text-2xl">{about.title}</h2>
                     {about.content.split("\n\n").map((paragraph, index) => (
                         <p key={index} className={index > 0 ? "mt-6" : undefined}>
                             {paragraph}
