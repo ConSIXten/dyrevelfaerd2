@@ -28,6 +28,8 @@ export default function VolunteerCards() {
   if (error) return <p>Fejl: {error}</p>;
 
   return (
+    <>
+    <h2 className="text-3xl font-bold m-4 ml-45 card-headline">Bliv frivillig</h2>
     <div className="card-grid">
       {volunteers.map((volunteer) => (
         <div className="cardBf" key={volunteer.id}>
@@ -50,5 +52,6 @@ export default function VolunteerCards() {
         </div>
       ))}
     </div>
+    </>
   );
 }

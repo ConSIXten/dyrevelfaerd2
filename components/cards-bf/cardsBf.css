@@ -6,6 +6,10 @@
   margin-inline: 10rem;
 }
 
+.card-headline{
+  color: #3D5F8F;
+}
+
 @media (max-width: 768px) {
   .card-grid {
     grid-template-columns: 1fr;
@@ -20,6 +24,7 @@
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .card-header {
@@ -44,13 +49,17 @@
 }
 
 .card-text {
-  color: #555;
   margin-bottom: 12px;
+  font-weight:100;
 }
 
 .card-extra {
   font-size: 0.9em;
   background-color: #CCCCCC;
-  border: 1px solid #000000;
-  padding: 20px;
+  padding: 1rem;
+  border-top: 1px solid #000000;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
