@@ -6,8 +6,6 @@ import "./logInd.css";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export default function LogIndPage() {
     const router = useRouter();
     const [username, setUsername] = useState("");
@@ -19,24 +17,30 @@ export default function LogIndPage() {
         e.preventDefault();
         setFieldErrors({});
 
-        if (!EMAIL_REGEX.test(username)) {
-            setFieldErrors({ username: "Indtast venligst en gyldig email-adresse" });
+        if (!username.trim() || !password) {
+            setFieldErrors({ username: "Indtast brugernavn og password" });
             return;
         }
 
         setSubmitting(true);
 
         try {
-            const res = await fetch("http://localhost:4000/api/v1/users", {
+            const res = await fetch("http://localhost:4000/auth/token", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
             });
 
-            if (!res.ok) throw new Error("Log ind mislykkedes");
+            const responseData = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                throw new Error(responseData.message || "Log ind mislykkedes");
+            }
 
-            const user = await res.json();
-            sessionStorage.setItem("user", JSON.stringify({ id: user.id, username }));
+            const token = responseData.token || responseData.access_token;
+            if (!token) throw new Error("API'et returnerede ikke en token");
+
+            sessionStorage.setItem("token", token);
+            sessionStorage.setItem("user", JSON.stringify({ username }));
             router.push("/admin");
         } catch (err) {
             setFieldErrors({ password: err.message });
@@ -55,10 +59,10 @@ export default function LogIndPage() {
                         <div className="logind-field">
                             <label htmlFor="username">Email</label>
                             <input
-                                type="email"
+                                type="text"
                                 id="username"
                                 name="username"
-                                placeholder="Email"
+                                placeholder="Brugernavn"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
