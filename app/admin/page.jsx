@@ -4,23 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AnimalForm from '../../components/admin/AnimalForm';
 import AnimalRow from '../../components/admin/AnimalRow';
-import './admin.css';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
+import { buildAnimalPayload, fetchAnimals, createAnimal, updateAnimal, deleteAnimal } from '../../lib/animalsApi';
+import './admin.css';
 
-const API_URL = 'http://localhost:4000/api/v1/animals';
 const EMPTY_FORM = { name: '', description: '', age: '', imageUrl: '' };
-
-const buildAnimalPayload = (form) => {
-    const imageUrl = form.imageUrl.trim();
-
-    return {
-        name: form.name.trim(),
-        description: form.description.trim() || 'Ingen beskrivelse endnu.',
-        age: Number(form.age) || 0,
-        ...(imageUrl ? { imageUrl, asset: { url: imageUrl } } : {}),
-    };
-};
 
 export default function AdminPage() {
     const router = useRouter();
@@ -34,46 +23,22 @@ export default function AdminPage() {
 
     useEffect(() => {
         const savedUser = sessionStorage.getItem('user');
+        const username = savedUser ? JSON.parse(savedUser)?.username : null;
 
-        if (!savedUser) {
-            router.replace('/logInd');
-            setIsCheckingAuth(false);
-            return;
-        }
-
-        try {
-            const parsedUser = JSON.parse(savedUser);
-            if (!parsedUser?.username) {
-                sessionStorage.removeItem('user');
-                router.replace('/logInd');
-                setIsCheckingAuth(false);
-                return;
-            }
-
-            setIsAuthorized(true);
-        } catch {
+        if (!username) {
             sessionStorage.removeItem('user');
             router.replace('/logInd');
-        } finally {
-            setIsCheckingAuth(false);
+        } else {
+            setIsAuthorized(true);
         }
+        setIsCheckingAuth(false);
     }, [router]);
 
-    const loadAnimals = async () => {
-        try {
-            const response = await fetch(API_URL);
-            if (!response.ok) throw new Error('Kunne ikke hente dyr');
-            const data = await response.json();
-            setAnimals(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        loadAnimals();
+        fetchAnimals()
+            .then(setAnimals)
+            .catch((err) => setError(err.message))
+            .finally(() => setLoading(false));
     }, []);
 
     const handleChange = (event) => {
@@ -83,34 +48,18 @@ export default function AdminPage() {
 
     const handleImageUpload = (file) => {
         if (!file) return;
-
         const reader = new FileReader();
-        reader.onload = () => {
-            setForm((prev) => ({ ...prev, imageUrl: String(reader.result) }));
-        };
+        reader.onload = () => setForm((prev) => ({ ...prev, imageUrl: String(reader.result) }));
         reader.readAsDataURL(file);
     };
 
     const handleAddAnimal = async (event) => {
         event.preventDefault();
-
         const payload = buildAnimalPayload(form);
-
-        if (!payload.name) {
-            alert('Skriv navnet på dyret');
-            return;
-        }
+        if (!payload.name) return alert('Skriv navnet på dyret');
 
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload),
-            });
-
-            if (!response.ok) throw new Error('Kunne ikke tilføje dyr');
-
-            const createdAnimal = await response.json();
+            const createdAnimal = await createAnimal(payload);
             setAnimals((prev) => [createdAnimal, ...prev]);
             setForm(EMPTY_FORM);
             setIsFormOpen(false);
@@ -126,14 +75,11 @@ export default function AdminPage() {
         const nextDescription = window.prompt('Skriv ny beskrivelse:', animal.description ?? '');
         if (nextDescription === null) return;
 
-        const nextImageUrl = window.prompt(
-            'Indsæt ny billed-URL (ingen ændring):',
-            animal.asset?.url ?? ''
-        );
+        const nextImageUrl = window.prompt('Indsæt ny billed-URL (ingen ændring):', animal.asset?.url ?? '');
         if (nextImageUrl === null) return;
 
         const imageUrl = nextImageUrl.trim();
-        const updatedAnimal = {
+        const payload = {
             ...animal,
             name: nextName.trim() || animal.name,
             description: nextDescription.trim() || animal.description || 'Ingen beskrivelse endnu.',
@@ -142,33 +88,18 @@ export default function AdminPage() {
         };
 
         try {
-            const response = await fetch(`${API_URL}/${animal.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedAnimal),
-            });
-
-            if (!response.ok) throw new Error('Kunne ikke redigere dyr');
-
-            const savedAnimal = await response.json();
-            setAnimals((prev) =>
-                prev.map((item) => (item.id === animal.id ? savedAnimal : item))
-            );
+            const savedAnimal = await updateAnimal(animal.id, payload);
+            setAnimals((prev) => prev.map((item) => (item.id === animal.id ? savedAnimal : item)));
         } catch (err) {
             alert(err.message);
         }
     };
 
     const handleDeleteAnimal = async (animalId) => {
-        const isConfirmed = window.confirm('Er du sikker på at du vil slette dette dyr?');
-        if (!isConfirmed) return;
+        if (!window.confirm('Er du sikker på at du vil slette dette dyr?')) return;
 
         try {
-            const response = await fetch(`${API_URL}/${animalId}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) throw new Error('Kunne ikke slette dyr');
+            await deleteAnimal(animalId);
             setAnimals((prev) => prev.filter((animal) => animal.id !== animalId));
         } catch (err) {
             alert(err.message);
