@@ -69,10 +69,10 @@ export default function AdminPage() {
     };
 
     const handleEditAnimal = async (animal) => {
-        const nextName = window.prompt('Skriv nyt navn:', animal.name ?? '');
+        const nextName = window.prompt('Skriv et nyt navn:', animal.name ?? '');
         if (nextName === null) return;
 
-        const nextDescription = window.prompt('Skriv ny beskrivelse:', animal.description ?? '');
+        const nextDescription = window.prompt('Skriv en ny beskrivelse:', animal.description ?? '');
         if (nextDescription === null) return;
 
         const nextImageUrl = window.prompt('Indsæt ny billed-URL (ingen ændring):', animal.asset?.url ?? '');
